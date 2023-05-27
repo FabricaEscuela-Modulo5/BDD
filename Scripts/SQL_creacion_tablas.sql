@@ -17,6 +17,7 @@ USE `mydb` ;
 -- -----------------------------------------------------
 -- Table `mydb`.`programa_academico`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`programa_academico`;
 CREATE TABLE IF NOT EXISTS `mydb`.`programa_academico` (
   `codigo_programa` INT NOT NULL,
   `nombre_programa` VARCHAR(100) NOT NULL,
@@ -29,6 +30,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`estado_solicitud`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`estado_solicitud`;
 CREATE TABLE IF NOT EXISTS `mydb`.`estado_solicitud` (
   `id_estado_solicitud` INT NOT NULL,
   `estado_solicitud` VARCHAR(50) NOT NULL,
@@ -39,6 +41,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`solicitud_homologacion`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`solicitud_homologacion`;
 CREATE TABLE IF NOT EXISTS `mydb`.`solicitud_homologacion` (
   `id_solicitud` INT NOT NULL AUTO_INCREMENT,
   `estado_solicitud` INT NOT NULL,
@@ -64,6 +67,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`materia`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`materia`;
 CREATE TABLE IF NOT EXISTS `mydb`.`materia` (
   `codigo_materia` INT NOT NULL AUTO_INCREMENT,
   `nombre_materia` VARCHAR(50) NOT NULL,
@@ -75,6 +79,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`plan_estudios`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`plan_estudios`;
 CREATE TABLE IF NOT EXISTS `mydb`.`plan_estudios` (
   `version` VARCHAR(3) NOT NULL,
   `codigo_programa` INT NOT NULL,
@@ -92,6 +97,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`estudiante`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`estudiante`;
 CREATE TABLE IF NOT EXISTS `mydb`.`estudiante` (
   `cedula` VARCHAR(12) NOT NULL,
   `nombre` VARCHAR(50) NOT NULL,
@@ -122,6 +128,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`materia_solicitud`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`materia_solicitud`;
 CREATE TABLE IF NOT EXISTS `mydb`.`materia_solicitud` (
   `id_solicitud` INT NOT NULL,
   `codigo_materia` INT NOT NULL,
@@ -152,6 +159,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`relacion`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`relacion`;
 CREATE TABLE IF NOT EXISTS `mydb`.`relacion` (
   `codigo_materia` INT NOT NULL,
   `codigo_materia_relacionada` INT NOT NULL,
@@ -175,6 +183,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`tipo_semestre`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tipo_semestre`;
 CREATE TABLE IF NOT EXISTS `mydb`.`tipo_semestre` (
   `id_tipo_semestre` INT NOT NULL,
   `tipo_semestre` VARCHAR(50) NULL,
@@ -185,6 +194,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`estado_semestre`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`estado_semestre`;
 CREATE TABLE IF NOT EXISTS `mydb`.`estado_semestre` (
   `id_estado_semestre` INT NOT NULL,
   `estado_semestre` VARCHAR(50) NOT NULL,
@@ -195,6 +205,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`semestre`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`semestre`;
 CREATE TABLE IF NOT EXISTS `mydb`.`semestre` (
   `id_semestre` INT NOT NULL,
   `fecha_inicio` DATETIME NOT NULL,
@@ -218,18 +229,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`estado_semestre`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`estado_semestre` (
-  `id_estado_semestre` INT NOT NULL,
-  `estado_semestre` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`id_estado_semestre`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `mydb`.`tercio`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tercio`;
 CREATE TABLE IF NOT EXISTS `mydb`.`tercio` (
   `id_tercio` INT NOT NULL,
   `tercio` VARCHAR(50) NOT NULL,
@@ -240,6 +242,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`situacion_academia`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`situacion_academica`;
 CREATE TABLE IF NOT EXISTS `mydb`.`situacion_academia` (
   `id_situacion_academica` INT NOT NULL,
   `situacion_academica` VARCHAR(50) NOT NULL,
@@ -250,21 +253,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`historia_academica`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`historia_academica`;
 CREATE TABLE IF NOT EXISTS `mydb`.`historia_academica` (
   `id_historia_academica` INT NOT NULL AUTO_INCREMENT,
   `cedula_estudiante` VARCHAR(12) NOT NULL,
   `id_semestre` INT NOT NULL,
-  `codigo_programa` INT NOT NULL,
   `promedio_acumulado` DECIMAL(2) NOT NULL,
   `promedio_semestre` DECIMAL(2) NOT NULL,
   `id_tercio` INT NOT NULL,
   `situacion_academica` INT NOT NULL,
-  `estado_semestre` INT NOT NULL,
   PRIMARY KEY (`id_historia_academica`),
   INDEX `fk_historia_academica_estudiante1_idx` (`cedula_estudiante` ASC) VISIBLE,
   INDEX `fk_historia_academica_semestre1_idx` (`id_semestre` ASC) VISIBLE,
-  INDEX `fk_historia_academica_programa_academico1_idx` (`codigo_programa` ASC) VISIBLE,
-  INDEX `fk_historia_academica_estado_semestre1_idx` (`estado_semestre` ASC) VISIBLE,
   INDEX `fk_historia_academica_tercio1_idx` (`id_tercio` ASC) VISIBLE,
   INDEX `fk_historia_academica_situacion_academia1_idx` (`situacion_academica` ASC) VISIBLE,
   CONSTRAINT `fk_historia_academica_estudiante1`
@@ -275,16 +275,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`historia_academica` (
   CONSTRAINT `fk_historia_academica_semestre1`
     FOREIGN KEY (`id_semestre`)
     REFERENCES `mydb`.`semestre` (`id_semestre`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_historia_academica_programa_academico1`
-    FOREIGN KEY (`codigo_programa`)
-    REFERENCES `mydb`.`programa_academico` (`codigo_programa`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_historia_academica_estado_semestre1`
-    FOREIGN KEY (`estado_semestre`)
-    REFERENCES `mydb`.`estado_semestre` (`id_estado_semestre`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_historia_academica_tercio1`
@@ -303,6 +293,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`materia_semestre`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`materia_semestre`;
 CREATE TABLE IF NOT EXISTS `mydb`.`materia_semestre` (
   `id_materia_semestre` INT NOT NULL AUTO_INCREMENT,
   `cedula_estudiante` VARCHAR(12) NOT NULL,
